@@ -7,24 +7,28 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <style>
-      #controls-container {
-        margin: 20px auto;
-        padding: 15px;
-        background-color: #f3f3f3;
+      #controls-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        padding: 20px;
         border-radius: 10px;
-        width: 90%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        width: 80%;
         max-width: 600px;
-        font-family: Arial, sans-serif;
+        z-index: 1000;
       }
-      #controls-container h2 {
+      #controls-popup h2 {
         text-align: center;
-        margin-bottom: 10px;
       }
-      #controls-container ul {
+      #controls-popup ul {
         list-style: none;
         padding: 0;
       }
-      #controls-container li {
+      #controls-popup li {
         margin: 5px 0;
         line-height: 1.5;
       }
@@ -32,27 +36,32 @@
         font-weight: bold;
         color: #2c3e50;
       }
+      #close-controls {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #show-controls-button {
+        margin: 20px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-       
- 
+    <button id="show-controls-button">Ver Controles</button>
 
-    
-        <div id="unity-build-title">RollABall_Idafe</div>
-      </div>
+    <div id="controls-popup">
+      <h2>🎮 Controles y Gameplay</h2>
       <h3>Controles de Movimiento</h3>
       <ul>
         <li><span class="control-key">W/↑</span>: Mover hacia adelante</li>
@@ -74,9 +83,24 @@
         <li><span class="control-key">B</span>: Cambiar a Cámara 1</li>
         <li><span class="control-key">Mouse Wheel</span>: Zoom dinámico <em>(por implementar)</em></li>
       </ul>
+      <button id="close-controls">Cerrar</button>
     </div>
 
-   
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-webgl-logo"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">RollABall_Idafe</div>
+      </div>
+    </div>
 
     <script>
       var container = document.querySelector("#unity-container");
@@ -85,6 +109,17 @@
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
+      var showControlsButton = document.querySelector("#show-controls-button");
+      var controlsPopup = document.querySelector("#controls-popup");
+      var closeControlsButton = document.querySelector("#close-controls");
+
+      showControlsButton.onclick = function() {
+        controlsPopup.style.display = 'block';
+      };
+
+      closeControlsButton.onclick = function() {
+        controlsPopup.style.display = 'none';
+      };
 
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
