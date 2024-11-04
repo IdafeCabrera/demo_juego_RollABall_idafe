@@ -6,6 +6,33 @@
     <title>Unity WebGL Player | RollABall_Idafe</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      #controls-container {
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #f3f3f3;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        font-family: Arial, sans-serif;
+      }
+      #controls-container h2 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      #controls-container ul {
+        list-style: none;
+        padding: 0;
+      }
+      #controls-container li {
+        margin: 5px 0;
+        line-height: 1.5;
+      }
+      .control-key {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+    </style>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -23,8 +50,33 @@
         <div id="unity-build-title">RollABall_Idafe</div>
       </div>
     </div>
-    <script>
 
+    <div id="controls-container">
+      <h2>🎮 Controles y Gameplay</h2>
+      <h3>Controles de Movimiento</h3>
+      <ul>
+        <li><span class="control-key">W/↑</span>: Mover hacia adelante</li>
+        <li><span class="control-key">S/↓</span>: Mover hacia atrás</li>
+        <li><span class="control-key">A/←</span>: Mover hacia la izquierda</li>
+        <li><span class="control-key">D/→</span>: Mover hacia la derecha</li>
+        <li><span class="control-key">Espacio</span>: Saltar / Doble salto</li>
+        <li><span class="control-key">Shift</span>: Sprint <em>(por implementar)</em></li>
+      </ul>
+      <h3>Control de Cámara</h3>
+      <ul>
+        <li><span class="control-key">Q</span>: Rotar cámara a la izquierda (90 grados)</li>
+        <li><span class="control-key">E</span>: Rotar cámara a la derecha (90 grados)</li>
+        <li><span class="control-key">R</span>: Inclinar cámara hacia arriba</li>
+        <li><span class="control-key">F</span>: Inclinar cámara hacia abajo</li>
+        <li><span class="control-key">V</span>: Cambiar a Cámara 2</li>
+        <li><span class="control-key">T</span>: Zoom in</li>
+        <li><span class="control-key">Y</span>: Zoom out</li>
+        <li><span class="control-key">B</span>: Cambiar a Cámara 1</li>
+        <li><span class="control-key">Mouse Wheel</span>: Zoom dinámico <em>(por implementar)</em></li>
+      </ul>
+    </div>
+
+    <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
@@ -32,12 +84,6 @@
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
           warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -69,40 +115,14 @@
         showBanner: unityShowBanner,
       };
 
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      // If you would like all file writes inside Unity Application.persistentDataPath
-      // directory to automatically persist so that the contents are remembered when
-      // the user revisits the site the next time, uncomment the following line:
-      // config.autoSyncPersistentDataPath = true;
-      // This autosyncing is currently not the default behavior to avoid regressing
-      // existing user projects that might rely on the earlier manual
-      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
-      // expected to change.
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
       } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
         canvas.style.width = "960px";
         canvas.style.height = "600px";
       }
